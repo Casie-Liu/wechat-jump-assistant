@@ -1,0 +1,10 @@
+WeChat Jump Assistant (Windows)
+
+This project includes a locally adapted detector and score-font samples from:
+https://github.com/zeal-up/wechat_jump_game
+Commit: 8b6b780dee7a1130baeccf4716de7718a2f6c09d
+License: Apache License, Version 2.0
+
+The upstream NOTICE is retained verbatim in third_party/NOTICE.
+Local modifications and additional references are described in
+third_party/SOURCE.txt and README.md.

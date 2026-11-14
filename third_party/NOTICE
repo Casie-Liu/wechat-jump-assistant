@@ -1,0 +1,22 @@
+Apache License 2.0 适用于本仓库全部代码与数据集。
+
+本项目改编自并致谢经典开源项目：
+
+    wangshub/wechat_jump_game
+    https://github.com/wangshub/wechat_jump_game
+    Copyright wangshub and contributors
+    Licensed under the Apache License, Version 2.0
+
+沿用其「以最上方连通域作为下一个目标台」的核心选台思路。
+
+本仓库（微信跳一跳刷榜算法 · 2026 最新版）由 zeal 维护，针对 2026 年最新版微信《跳一跳》
+从零重做了目标检测算法与桌面端自动化流水线，新增内容包括但不限于：
+
+  - 纯 OpenCV 检测器 detector.py（棋子/目标/状态检测、顶面精修、白色定心点精修、透视先验）
+  - 角落背景估计 + 距离门控白掩码（适配浅色/渐变背景主题）
+  - 棋子颜色轮廓膨胀遮挡（保留紧贴棋子的相邻目标台）
+  - 8 类实机难例的逐一攻克（编号 159–165）
+  - 165 帧人工精标集 + 1085 帧实机回归集 + 回归测试框架
+  - 桌面端窗口截图驱动（xdotool + ImageMagick）与自动重开循环
+
+原项目中基于 Android ADB / iOS / TensorFlow 模型的旧实现未包含在本仓库中。

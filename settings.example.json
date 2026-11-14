@@ -1,0 +1,9 @@
+{
+  "algorithm": "zeal-8b6b780-camera-landing-v2",
+  "coefficient": 1.0,
+  "wait": 3.5,
+  "limit": 2000,
+  "calibrated_size": null,
+  "last_direction": null,
+  "camera_middle": 242.5
+}

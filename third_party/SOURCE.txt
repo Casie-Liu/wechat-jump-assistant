@@ -1,0 +1,30 @@
+Upstream: https://github.com/zeal-up/wechat_jump_game
+Commit: 8b6b780dee7a1130baeccf4716de7718a2f6c09d
+Commit date: 2026-06-26
+License: Apache License 2.0 (see LICENSE)
+
+zeal_detector.py is adapted from upstream detector.py. Local modifications:
+- Fit a vertical background gradient for neutral grey themes; retain the
+  upstream colour model for chromatic themes, including translucent wood.
+- Use a narrower body mask plus a separate head mask for nearby platforms.
+- Refine nearby symmetric tops from their unoccluded upper rows.
+This change passes all 165 precision and 1085 regression samples, and fixes a live grey-theme
+frame whose original predicted target was 19 canonical pixels off-centre.
+The pressure-time calculation in ../vision.py uses locally fitted directional
+curves from this computer's measured landing offsets, inferred using the
+camera midpoint and reliable next-platform hints, with 100--1600ms limits.
+The local PreciseInput.cs/.exe worker isolates timed holds from Python/Tk.
+
+Local additions: Windows capture/input, DPI handling, UI, hotkey stop,
+coordinate normalization, output validation, precision timing, calibration
+controls, constrained global centre-hint detection, safe between-jump pause,
+and camera-axis turn correction.
+Upstream Linux/X11 automation and optional LLM integration are not invoked.
+
+score_templates.npz contains normalized glyphs extracted from the upstream
+Apache-2.0 precision screenshots 001--007, 014, 015 and 023.
+The ten labels were visually verified locally. The local score reader is new code.
+
+The turn-distance strategy is also described by zaijiejud/PlayJumpGame:
+https://github.com/zaijiejud/PlayJumpGame
+The local implementation uses the detected camera midpoint and persists direction.
