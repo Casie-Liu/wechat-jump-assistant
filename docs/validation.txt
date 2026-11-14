@@ -1,5 +1,12 @@
 本机验证记录（本次目标已完成）
 
+2026-11-14 独立 exe 验证
+PyInstaller 6.22.3 / Python 3.14.3 在隔离构建环境生成 Windows x64 单文件程序。
+在只放置 exe 的目录、PATH 仅含 Windows 系统目录且无 PYTHONHOME/PYTHONPATH/PYTHONUSERBASE 时，自检通过。
+确认实际加载的 Python DLL 以及 NumPy、OpenCV、Pillow 模块均来自临时解包目录，数字模板、Tcl 和计时进程可用。
+计时自检使用无效 HWND，拒绝输入后退出，没有操作游戏。
+本机实际界面启动成功；微调设置保存到 LocalAppData，退出后重启仍能读取，测试后恢复默认系数并退出。
+
 2026-11-14 发布前复核
 核心源码和数字模板与此前实测版本逐文件校验一致；Python 语法检查、C# 本地构建完成。
 本次无输入计时基准 100 次：偏差中位数 0.0003ms，99 分位 18.3225ms，最大 20.3802ms。

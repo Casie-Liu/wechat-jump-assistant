@@ -1,11 +1,11 @@
 """Bounded local mouse-hold worker, isolated from Python/Tk scheduling."""
-from pathlib import Path
 import subprocess
+from app_paths import resource_path
 
 
 class PreciseInput:
     def __init__(self, hwnd):
-        executable = Path(__file__).with_name('PreciseInput.exe')
+        executable = resource_path('PreciseInput.exe')
         self.process = subprocess.Popen([str(executable), str(int(hwnd))],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
             text=True, encoding='ascii', creationflags=subprocess.CREATE_NO_WINDOW)

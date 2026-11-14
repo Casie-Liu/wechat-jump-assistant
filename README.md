@@ -15,7 +15,17 @@
 
 通过普通截图和鼠标输入工作，不修改微信客户端、内存或分数数据。程序不会自动分享战绩、点击广告、复活或重开。
 
-## 环境与安装
+## 直接运行 exe（无需安装 Python）
+
+从 [GitHub Releases](https://github.com/Casie-Liu/wechat-jump-assistant/releases/latest) 下载 `WeChatJumpAssistant-Windows-x64.exe`，双击打开，再按下文校准步骤绑定游戏。
+
+单文件版包含 Python、NumPy、OpenCV、Pillow、Tcl/Tk、数字模板和按压计时进程。面向 Windows 10/11 x64，计时进程需要系统自带或已安装的 .NET Framework 4.x。首次启动会解压内置资源，可能稍慢。
+
+exe 版的设置位于 `%LOCALAPPDATA%\WeChatJumpAssistant\settings.json`，日志和截图位于其 `runtime` 子目录；重启会保留校准。程序启动后不会自动开始操作游戏。
+
+Release 同时提供第三方许可证压缩包和 SHA-256 校验文件。exe 未做代码签名。
+
+## 从源码运行
 
 - Windows x64，电脑微信中能正常运行「跳一跳」。
 - 64 位 Python 3.11 或以上，含 Tkinter；本机验证版本为 Python 3.14。
@@ -32,7 +42,20 @@ python -m venv .venv
 .\start.cmd
 ```
 
-`build.cmd` 从附带的 `PreciseInput.cs` 构建计时进程。仓库不包含依赖本机 Python 绝对路径的个人启动器，也不提交预编译 exe。`start.cmd` 优先使用本目录的虚拟环境；如果计时进程尚未构建，会先尝试构建。
+`build.cmd` 从附带的 `PreciseInput.cs` 构建计时进程。Git 源码不提交预编译 exe；独立版本通过 Releases 分发。`start.cmd` 优先使用本目录的虚拟环境；如果计时进程尚未构建，会先尝试构建。
+
+## 自行打包单文件版
+
+在 Windows x64 和 64 位 Python 3.14 环境下执行：
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements-build.txt
+.\build-release.cmd
+.\dist\WeChatJumpAssistant-Windows-x64.exe --self-test .\build\self-test.json
+```
+
+最后一条命令仅做资源、依赖、识别模块和计时进程的离线自检，不截图或控制微信。构建输出为 `dist/WeChatJumpAssistant-Windows-x64.exe`。打包用的临时资源路径与持久设置路径分离，实现参考 [PyInstaller 运行时文档](https://pyinstaller.org/en/stable/runtime-information.html)。
 
 ## 首次校准
 
@@ -42,7 +65,7 @@ python -m venv .venv
 4. 「试跳一次」，保持游戏前台。跳短了增加系数，跳远了减小系数，直到落点合适；成功试跳会标记已校准。
 5. 点击「开始全自动」。运行时控制面板会最小化。窗口尺寸、缩放或皮肤变化后重新绑定和校准。
 
-程序首次运行会生成 `settings.json`。默认系数 1.0，等待 3.5 秒，最多 2,000 次按压；可参考 `settings.example.json`。按压次数不代表成功跳数或得分。
+程序首次保存配置时会生成 `settings.json`；源码版在项目目录，exe 版在上文用户数据目录。默认系数 1.0，等待 3.5 秒，最多 2,000 次按压；可参考 `settings.example.json`。按压次数不代表成功跳数或得分。
 
 | 按键 | 操作 |
 | --- | --- |
@@ -71,6 +94,8 @@ python -m venv .venv
 | `score_reader.py` | 固定数字字体识别，无联网 OCR |
 | `PreciseInput.cs` / `precise_input.py` | 独立计时进程与 Python 协议 |
 | `build.cmd` / `start.cmd` | 本地构建与启动 |
+| `build-release.cmd` / `WeChatJumpAssistant.spec` | 独立单文件构建 |
+| `app_paths.py` / `frozen_selftest.py` | 资源路径、持久设置和离线自检 |
 | `third_party/` | 上游检测器、数字模板和来源声明 |
 
 运行生成的 `settings.json`、`runtime/` 日志和截图均已加入 `.gitignore`。

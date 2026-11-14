@@ -10,3 +10,6 @@ runtime/
 .env.*
 .idea/
 .vscode/
+build/
+dist/
+release/

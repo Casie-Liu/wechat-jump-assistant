@@ -1,9 +1,9 @@
 """Recognize the game's fixed score font using locally bundled Apache-2.0 samples."""
-from pathlib import Path
 import cv2
 import numpy as np
+from app_paths import resource_path
 
-with np.load(Path(__file__).resolve().parent/'third_party'/'score_templates.npz', allow_pickle=False) as data:
+with np.load(resource_path('third_party/score_templates.npz'), allow_pickle=False) as data:
     TEMPLATES=data['glyphs'].astype(float)
     ASPECTS=data['aspects']
 

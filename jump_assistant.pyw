@@ -1,4 +1,10 @@
 """Windows visual Jump assistant. Run locally; no network or client injection."""
+import sys
+
+if __name__ == '__main__' and '--self-test' in sys.argv:
+    from frozen_selftest import main as selftest_main
+    raise SystemExit(selftest_main())
+
 import ctypes
 from ctypes import wintypes as W
 import json
@@ -9,6 +15,7 @@ import threading
 import time
 import tkinter as tk
 from tkinter import ttk, messagebox
+from app_paths import data_dir
 
 try:
     import cv2
@@ -19,10 +26,12 @@ try:
     from precise_input import PreciseInput
 except ImportError as error:
     tk.Tk().withdraw()
-    messagebox.showerror('缺少依赖', f'{error}\n请先运行：python -m pip install -r requirements.txt')
+    guidance = ('请重新下载完整的 Windows Release。' if getattr(sys, 'frozen', False)
+                else '请先运行：python -m pip install -r requirements.txt')
+    messagebox.showerror('缺少依赖', f'{error}\n{guidance}')
     raise SystemExit(1)
 
-BASE = Path(__file__).resolve().parent
+BASE = data_dir()
 user32 = ctypes.WinDLL('user32', use_last_error=True)
 try:
     user32.SetProcessDpiAwarenessContext(ctypes.c_void_p(-4))
@@ -128,6 +137,7 @@ def capture(hwnd, crop=None):
 
 class App:
     def __init__(self):
+        BASE.mkdir(parents=True, exist_ok=True)
         self.root = tk.Tk()
         self.root.title('跳一跳 · 视觉辅助')
         self.ui_scale = max(1, self.root.winfo_fpixels('1i')/96)
